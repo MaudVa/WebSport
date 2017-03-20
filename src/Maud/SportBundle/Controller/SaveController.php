@@ -22,7 +22,6 @@ class SaveController extends Controller
 {
   public function indexAction()
   {
-   
     //On récupère la liste des cours réservés dans la BDD
 	$repository = $this->getDoctrine()->getManager()->getRepository('MaudSportBundle:Save');
 	$listSaves = $repository->findAll();

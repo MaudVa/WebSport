@@ -1,5 +1,5 @@
 cours_sport:
-    path:     /cours-sport
+    path:     /
     defaults: { _controller: MaudSportBundle:Save:index }
   
 cours_sport_reserver:
