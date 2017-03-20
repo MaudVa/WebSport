@@ -1,0 +1,16 @@
+maud_sport:
+    resource: "@MaudSportBundle/Resources/config/routing.yml"
+    prefix:   /
+
+# oc_platform:
+    # resource: "@OCPlatformBundle/Resources/config/routing.yml"
+    # prefix:   /platform
+
+# my_app_filmotheque:
+    # resource: "@myAppFilmothequeBundle/Controller/"
+    # type:     annotation
+    # prefix:   /myapp
+    
+    
+
+

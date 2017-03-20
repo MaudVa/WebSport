@@ -1,0 +1,11 @@
+{# src/Maud/SportBundle/Resources/views/Save/menu.html.twig #}
+
+<ul class="nav nav-pills nav-stacked">
+  {% for save in listSaves %}
+    <li>
+      <a href="{{ path('cours_sport_view', {'id': save.id}) }}">
+        {{ save.cours }}
+      </a>
+    </li>
+  {% endfor %}
+</ul>

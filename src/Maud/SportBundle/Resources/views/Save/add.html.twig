@@ -1,0 +1,29 @@
+{# src/Maud/SportBundle/Resources/views/Save/add.html.twig #}
+
+
+{% extends "MaudSportBundle::layout.html.twig" %}
+
+
+{% block title %}
+
+  Ajouter un favori - {{ parent() }}
+
+{% endblock %}
+
+
+{% block maudsport_body %}
+
+
+  <h2>Ajouter un favori</h2>
+  
+  <p>
+
+    Vous ajoutez un cours dans vos favoris de réservation.
+
+  </p>
+
+
+  {{ include("MaudSportBundle:Save:form.html.twig") }}
+
+
+{% endblock %}

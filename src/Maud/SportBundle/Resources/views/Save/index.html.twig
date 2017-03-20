@@ -1,0 +1,46 @@
+{# src/Maud/SportBundle/Resources/views/Save/index.html.twig #}
+
+
+{% extends "MaudSportBundle::layout.html.twig" %}
+
+
+{% block title %}
+
+  Accueil - {{ parent() }}
+
+{% endblock %}
+
+
+{% block maudsport_body %}
+
+
+  <h2>Liste des favoris</h2>
+
+
+  <ul>
+
+    {% for save in listSaves %}
+
+      <li>
+
+        <a href="{{ path('cours_sport_view', {'id': save.id}) }}">
+
+          {{ save.cours }}
+
+        </a>
+
+        à {{ save.club }},
+
+
+      </li>
+
+    {% else %}
+
+      <li>Pas (encore !) de cours réservés </li>
+
+    {% endfor %}
+
+  </ul>
+
+
+{% endblock %}
