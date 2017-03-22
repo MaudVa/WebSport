@@ -18,7 +18,7 @@ class SaveType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('club',TextType::class)->add('cours', TextType::class)->add('date', DateTimeType::class)->add('save', SubmitType::class)        ;
+        $builder->add('club',TextType::class)->add('cours', TextType::class)->add('jour', TextType::class)->add('save', SubmitType::class)        ;
     }
     
     /**

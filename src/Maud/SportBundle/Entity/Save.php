@@ -36,11 +36,11 @@ class Save
     private $cours;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="date", type="datetime")
+     * @ORM\Column(name="jour", type="string")
      */
-    private $date;
+    private $jour;
 
 
     /**
@@ -102,27 +102,27 @@ class Save
     }
 
     /**
-     * Set date
+     * Set jour
      *
-     * @param \DateTime $date
+     * @param string $jour
      *
      * @return Save
      */
-    public function setDate($date)
+    public function setJour($jour)
     {
-        $this->date = $date;
+        $this->jour = $jour;
 
         return $this;
     }
 
     /**
-     * Get date
+     * Get jour
      *
-     * @return \DateTime
+     * @return string
      */
-    public function getDate()
+    public function getJour()
     {
-        return $this->date;
+        return $this->jour;
     }
 }
 

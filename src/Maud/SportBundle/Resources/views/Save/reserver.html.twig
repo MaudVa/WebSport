@@ -31,16 +31,16 @@
 
         à {{ save.club }}
 		
-		, le {{ save.date|date('d/m/Y') }}
+		, le {{ save.jour }}
 		
 			<br>
-				<a href="{{ path('cours_sport_nextsave',{'password': password})}}" class="btn btn-default">
+				<a href="{{ path('cours_sport_nextsave',{'password': password,'targetClubName': save.club, 'targetCourseName':save.cours})}}" class="btn btn-default">
 					<i class="glyphicon glyphicon-plus"></i>
 					Réserver la prochaine date
 				</a>
-				<a href="{{ path('cours_sport_delete', {'id': save.id}) }}" class="btn btn-danger">
+				<a href="{{ path('cours_sport_delete', {'id': save.id,'password':password}) }}" class="btn btn-danger">
 					<i class="glyphicon glyphicon-trash"></i>
-					Supprimer l'annonce
+					Supprimer le favori
 				</a>
 			</br>
 
