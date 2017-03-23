@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,7 +19,11 @@ class SaveType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('club',TextType::class)->add('cours', TextType::class)->add('jour', TextType::class)->add('save', SubmitType::class)        ;
+        $builder->add('club',TextType::class)->add('cours', ChoiceType::class,array(
+        'choices'  => array(
+            'STEP' => 'STEP',
+            'BODY COMBAT' => 'BODY COMBAT' )))
+        ->add('jour', TextType::class)->add('save', SubmitType::class)        ;
     }
     
     /**
