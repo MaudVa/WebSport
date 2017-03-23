@@ -8,11 +8,12 @@ cours_sport_reserver:
         _controller: MaudSportBundle:Save:reserver
         
 cours_sport_nextsave:
-    path:    /nextsave/{password}/{targetClubName}/{targetCourseName}/{targetDay}
+    path:    /nextsave/{password}/{id}/{targetClubName}/{targetCourseName}/{targetDay}
     defaults:
         _controller: MaudSportBundle:Save:nextsave
     requirements:
         password: .+
+        id : \d+
 
 cours_sport_view:
     path:    /reserver/{id}

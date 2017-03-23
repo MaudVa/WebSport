@@ -42,6 +42,13 @@ class Save
      */
     private $jour;
 
+    
+      /**
+     * @var boolean
+     *
+     * @ORM\Column(name="réservé", type="boolean")
+     */
+    private $reservation;
 
     /**
      * Get id
@@ -123,6 +130,30 @@ class Save
     public function getJour()
     {
         return $this->jour;
+    }
+    
+      /**
+     * Set jour
+     *
+     * @param string $jour
+     *
+     * @return Save
+     */
+    public function setReservation($reservation)
+    {
+        $this->reservation = $reservation;
+
+        return $this;
+    }
+
+    /**
+     * Get jour
+     *
+     * @return string
+     */
+    public function getReservation()
+    {
+        return $this->reservation;
     }
 }
 

@@ -34,7 +34,7 @@
 		, le {{ save.jour }}
 		
 			<br>
-				<a href="{{ path('cours_sport_nextsave',{'password': password,'targetClubName': save.club, 'targetCourseName':save.cours,'targetDay':save.jour})}}" class="btn btn-default">
+				<a href="{{ path('cours_sport_nextsave',{'password': password,'id':save.id,'targetClubName': save.club, 'targetCourseName':save.cours,'targetDay':save.jour})}}" class="btn btn-default">
 					<i class="glyphicon glyphicon-plus"></i>
 					Réserver la prochaine date
 				</a>

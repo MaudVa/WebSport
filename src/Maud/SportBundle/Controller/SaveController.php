@@ -24,7 +24,7 @@ class SaveController extends Controller
   {
     //On récupère la liste des cours réservés dans la BDD
 	$repository = $this->getDoctrine()->getManager()->getRepository('MaudSportBundle:Save');
-	$listSaves = $repository->findAll();
+	$listSaves = $repository->findBy(array('reservation'=>'1'));
 
     return $this->render('MaudSportBundle:Save:index.html.twig', array(
 
@@ -124,7 +124,7 @@ class SaveController extends Controller
     return $this->render('MaudSportBundle:Save:reserver.html.twig', array('listSaves'=>$listSaves, 'password'=>$password));
   }
 
-  public function nextSaveAction($password,$targetClubName,$targetCourseName,$targetDay) {
+  public function nextSaveAction($password,$id,$targetClubName,$targetCourseName,$targetDay) {
 
     // Step 1: get course list from Neoness
     // We are going to use cURL to requests urls
@@ -205,7 +205,16 @@ class SaveController extends Controller
     $resultBook = curl_exec($curlHandleBook);
     curl_close($curlHandleBook);
     // ET voilà!
+    
+    //Last step : we put the reservation column in the database at true for this course
+    $em=$this->getDoctrine()->getManager(); 
+    $repository = $this->getDoctrine()->getManager()->getRepository('MaudSportBundle:Save');
+    $save = $repository->find($id);
+    $save->setReservation('1');
+    $em->persist($save);
+    $em->flush();
 
     return $this->render('MaudSportBundle:Save:next.html.twig', array('result' => $resultBook));
   }
+  
 }  
