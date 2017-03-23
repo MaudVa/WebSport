@@ -108,23 +108,23 @@ class SaveController extends Controller
 
   }
   
-  public function deleteAction($id,Request $request)
+  public function deleteAction($id, $password)
 
   {
     // Ici, on récupère l'annonce correspondant à $id
 	$repository = $this->getDoctrine()->getManager()->getRepository('MaudSportBundle:Save');
 	$save = $repository->find($id);
-    // Ici, on gérera la suppression de l'annonce en question
+    // Ici, on gérera la suppression de l'annonce en question de la BDD
 	$em = $this->getDoctrine()->getManager();
 	$em->remove($save);
 	$em->flush();
 	
 	//On affiche la liste des cours favoris
 	$listSaves = $repository->findAll();
-    return $this->render('MaudSportBundle:Save:reserver.html.twig', array('listSaves'=>$listSaves));
+    return $this->render('MaudSportBundle:Save:reserver.html.twig', array('listSaves'=>$listSaves, 'password'=>$password));
   }
 
-  public function nextSaveAction($password) {
+  public function nextSaveAction($password,$targetClubName,$targetCourseName,$targetDay) {
 
     // Step 1: get course list from Neoness
     // We are going to use cURL to requests urls
@@ -144,7 +144,7 @@ class SaveController extends Controller
 
     // Step 2: get target course id from these informations
     // First we get the Club Id based on club Name
-    $targetClubName = "Saint-Lazare";
+        //$targetClubName = "Saint-Lazare";
 
     // Array filter will filter our clubs array to leave only the club whose name match
     $targetClubs = array_filter(
@@ -161,13 +161,13 @@ class SaveController extends Controller
     $targetClub = array_values($targetClubs)[0]; // Weird syntax: we take the first element of $targetClubs which is our target club
     $targetClubId = $targetClub["id"];
 
-    // Now that we have the Id, we want to find target courses
-    $targetCourseName = "STEP";
+    // Now that we have the Id, we want to find target courses on the right day
+    //$targetCourseName = "STEP";
 
     $targetCourses = array_filter(
       $courses,
-      function ($course) use ($targetClubId, $targetCourseName) {
-        if ($course["nom"] == $targetCourseName && $course["club_id"] == $targetClubId) {
+      function ($course) use ($targetClubId, $targetCourseName, $targetDay) {
+        if ($course["nom"] == $targetCourseName && $course["club_id"] == $targetClubId && $course["jour"] == $targetDay) {
             return true;
         } else {
             return false;
