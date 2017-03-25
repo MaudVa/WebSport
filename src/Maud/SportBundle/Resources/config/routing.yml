@@ -35,3 +35,11 @@ cours_sport_delete:
     requirements:
         id: \d+
         password : .+
+        
+cours_sport_cancel:
+    path:    /cancel/{id}/{password}
+    defaults:
+        _controller: MaudSportBundle:Save:delete
+    requirements:
+        id: \d+
+        password : .+

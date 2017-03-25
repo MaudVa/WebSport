@@ -22,12 +22,15 @@
     {% for save in listSaves %}
 
       <li>
-
           {{ save.cours }}
 
 
-        à {{ save.club }},
-
+        à {{ save.club }}, {{save.jour}}
+        
+        <a href="{{ path('cours_sport_cancel', {'id': save.id,'password':password}) }}" class="btn btn-danger">
+					<i class="glyphicon glyphicon-trash"></i>
+					Annuler la réservation
+				</a>
 
       </li>
 

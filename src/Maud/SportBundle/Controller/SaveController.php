@@ -25,10 +25,14 @@ class SaveController extends Controller
     //On récupère la liste des cours réservés dans la BDD
 	$repository = $this->getDoctrine()->getManager()->getRepository('MaudSportBundle:Save');
 	$listSaves = $repository->findBy(array('reservation'=>'1'));
+        
+    //On récupère le mot de passe client
+        //$password=getenv(NEONESS_PASSWORD);
+        $password=$this->container->getParameter('neoness_password');
 
     return $this->render('MaudSportBundle:Save:index.html.twig', array(
 
-      'listSaves' => $listSaves
+      'listSaves' => $listSaves,'password'=>$password
 
     ));
 
