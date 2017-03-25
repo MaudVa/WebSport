@@ -210,8 +210,8 @@ class SaveController extends Controller
     curl_close($curlHandleBook);
     // ET voilà!
     
-    //Last step : we put the reservation column in the database at true for this course
-    $em=$this->getDoctrine()->getManager(); 
+    // Last step : we put the reservation column in the database at true for this course
+    $em = $this->getDoctrine()->getManager();
     $repository = $this->getDoctrine()->getManager()->getRepository('MaudSportBundle:Save');
     $save = $repository->find($id);
     $save->setReservation('1');

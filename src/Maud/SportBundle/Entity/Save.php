@@ -48,7 +48,7 @@ class Save
      *
      * @ORM\Column(name="réservé", type="boolean")
      */
-    private $reservation;
+    private $reservation = false;
 
     /**
      * Get id
