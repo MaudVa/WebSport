@@ -7,28 +7,17 @@ namespace Maud\SportBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Maud\SportBundle\Entity\Save;
 use Maud\SportBundle\Form\SaveType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 
 class SaveController extends Controller
 {
-  public function indexAction()
+  //Function that lists all the booked courses on the welcome page
+    public function indexAction()
   {
-    //On récupère la liste des cours réservés dans la BDD
+
 	$repository = $this->getDoctrine()->getManager()->getRepository('MaudSportBundle:Save');
 	$listSaves = $repository->findBy(array('reservation'=>'1'));
-        
-    //On récupère le mot de passe client
-        //$password=getenv(NEONESS_PASSWORD);
-        $password=$this->container->getParameter('neoness_password');
+	$password=$this->container->getParameter('neoness_password');
 
     return $this->render('MaudSportBundle:Save:index.html.twig', array(
 
@@ -37,23 +26,20 @@ class SaveController extends Controller
     ));
 
   }
-  
-  public function reserverAction()
+
+  //Function that lists all the favorite courses
+  public function favoriteAction()
   {
-    
-	//On récupère la liste des cours réservés dans la BDD
 	$repository = $this->getDoctrine()->getManager()->getRepository('MaudSportBundle:Save');
 	$listSaves = $repository->findAll();
-        
-     //On récupère le mot de passe client
-        //$password=getenv(NEONESS_PASSWORD);
-        $password=$this->container->getParameter('neoness_password');
-	
-    //On affiche la liste des cours favoris
-    return $this->render('MaudSportBundle:Save:reserver.html.twig', array('listSaves'=>$listSaves,'password'=>$password));
+	$password=$this->container->getParameter('neoness_password');
+
+    return $this->render('MaudSportBundle:Save:favorite.html.twig', array('listSaves'=>$listSaves,'password'=>$password));
   }
-  
-    public function viewAction($id)
+
+
+
+   /* public function viewAction($id)
   {
     // Notre liste de cours en dur
 
@@ -63,10 +49,11 @@ class SaveController extends Controller
     );
 
     return $this->render('MaudSportBundle:Save:view.html.twig', array('id'=>1));
-  }
+  }*/
   
-  
-   public function menuAction($limit)
+
+
+   /*public function menuAction($limit)
   {
     // On fixe en dur une liste ici, bien entendu par la suite
     // on la récupérera depuis la BDD !
@@ -81,54 +68,60 @@ class SaveController extends Controller
       // les variables nécessaires au template !
       'listSaves' => $listSaves
     ));
-  }
-  
-  public function addAction(Request $request)
+  }*/
+
+  //Function that adds a favorite course to the list
+  public function addFavoriteAction(Request $request)
 
   {
-    // Création de l'entité
     $Save = new Save();
-	
-	// Création du FormBuilder
+
 	$form=$this->get('form.factory')->create(SaveType::class,$Save);
 
-    // Si la requête est en post
     if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-        // On enregistre notre objet $Save dans la base de données, par exemple
         $em = $this->getDoctrine()->getManager();
         $em->persist($Save);
         $em->flush();
         $request->getSession()->getFlashBag()->add('notice', 'cours bien enregistré.');
 
-        // On redirige vers la page d'accueil pour l'instant
-
         return $this->redirectToRoute('cours_sport');
 
 	}	
 
-    return $this->render('MaudSportBundle:Save:add.html.twig', array(
+    return $this->render('MaudSportBundle:Save:addFavorite.html.twig', array(
 	'form' => $form->createView(),
 	));
 
   }
-  
+
+  //Function that deletes a favorite course
   public function deleteAction($id, $password)
 
   {
-    // Ici, on récupère l'annonce correspondant à $id
 	$repository = $this->getDoctrine()->getManager()->getRepository('MaudSportBundle:Save');
 	$save = $repository->find($id);
-    // Ici, on gérera la suppression de l'annonce en question de la BDD
 	$em = $this->getDoctrine()->getManager();
 	$em->remove($save);
 	$em->flush();
-	
-	//On affiche la liste des cours favoris
+
 	$listSaves = $repository->findAll();
-    return $this->render('MaudSportBundle:Save:reserver.html.twig', array('listSaves'=>$listSaves, 'password'=>$password));
+    return $this->render('MaudSportBundle:Save:favorite.html.twig', array('listSaves'=>$listSaves, 'password'=>$password));
   }
 
-  public function nextSaveAction($password,$id,$targetClubName,$targetCourseName,$targetDay) {
+//    //Function that deletes a booked course
+//    public function cancelBookingAction($id, $password)
+//
+//    {
+//        $repository = $this->getDoctrine()->getManager()->getRepository('MaudSportBundle:Save');
+//        $save = $repository->find($id);
+//        $cancel.Id = $save.
+//
+//        $listSaves = $repository->findAll();
+//        return $this->render('MaudSportBundle:Save:favorite.html.twig', array('listSaves'=>$listSaves, 'password'=>$password));
+//    }
+
+  //Function that books the next session for the favorite course
+  public function bookCourseAction($password,$id,$targetClubName,$targetCourseName,$targetDay) {
 
     // Step 1: get course list from Neoness
     // We are going to use cURL to requests urls
@@ -215,6 +208,7 @@ class SaveController extends Controller
     $repository = $this->getDoctrine()->getManager()->getRepository('MaudSportBundle:Save');
     $save = $repository->find($id);
     $save->setReservation('1');
+    $save->setCoursId($targetCourse["id"]);
     $em->persist($save);
     $em->flush();
 

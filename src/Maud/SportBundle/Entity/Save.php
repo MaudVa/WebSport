@@ -51,6 +51,13 @@ class Save
     private $reservation = false;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="coursId", type="integer", options={"default"= 0})
+     */
+    private $coursId;
+
+    /**
      * Get id
      *
      * @return int
@@ -154,6 +161,30 @@ class Save
     public function getReservation()
     {
         return $this->reservation;
+    }
+
+    /**
+     * Set coursId
+     *
+     * @param string $coursId
+     *
+     * @return Save
+     */
+    public function setCoursId($coursId)
+    {
+        $this->club = $coursId;
+
+        return $this;
+    }
+
+    /**
+     * Get coursId
+     *
+     * @return string
+     */
+    public function getCoursId()
+    {
+        return $this->coursId;
     }
 }
 
