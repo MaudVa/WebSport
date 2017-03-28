@@ -53,9 +53,9 @@ class Save
     /**
      * @var int
      *
-     * @ORM\Column(name="coursId", type="integer", options={"default"= 0})
+     * @ORM\Column(name="coursId", type="integer", options={"default"= 1})
      */
-    private $coursId;
+    private $coursId = 1;
 
     /**
      * Get id

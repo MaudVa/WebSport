@@ -114,10 +114,8 @@ class SaveController extends Controller
 //    {
 //        $repository = $this->getDoctrine()->getManager()->getRepository('MaudSportBundle:Save');
 //        $save = $repository->find($id);
-//        $cancel.Id = $save.
-//
-//        $listSaves = $repository->findAll();
-//        return $this->render('MaudSportBundle:Save:favorite.html.twig', array('listSaves'=>$listSaves, 'password'=>$password));
+
+//        return $this->render('MaudSportBundle:Save:cancelBooking.html.twig', array('coursId'=>$save.coursId, 'password'=>$password));
 //    }
 
   //Function that books the next session for the favorite course
