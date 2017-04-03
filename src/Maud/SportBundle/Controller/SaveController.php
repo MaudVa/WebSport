@@ -108,15 +108,36 @@ class SaveController extends Controller
     return $this->render('MaudSportBundle:Save:favorite.html.twig', array('listSaves'=>$listSaves, 'password'=>$password));
   }
 
-//    //Function that deletes a booked course
-//    public function cancelBookingAction($id, $password)
-//
-//    {
-//        $repository = $this->getDoctrine()->getManager()->getRepository('MaudSportBundle:Save');
-//        $save = $repository->find($id);
+    //Function that deletes a booked course
+    public function cancelBookingAction($id, $password)
 
-//        return $this->render('MaudSportBundle:Save:cancelBooking.html.twig', array('coursId'=>$save.coursId, 'password'=>$password));
-//    }
+    {
+        $repository = $this->getDoctrine()->getManager()->getRepository('MaudSportBundle:Save');
+        $save = $repository->find($id);
+
+        $curlHandleLogIn = curl_init("http://www.neoness-forme.com/scr/mon-espace-connexion-scr.php");
+        curl_setopt($curlHandleLogIn, CURLOPT_POST,1);
+        curl_setopt($curlHandleLogIn, CURLOPT_POSTFIELDS,  http_build_query(array('num_client' => '197949', 'mdp_client' => $password)));
+        curl_setopt($curlHandleLogIn, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curlHandleLogIn, CURLOPT_HEADER, 1);
+        $resultLogIn = curl_exec($curlHandleLogIn);
+        curl_close($curlHandleLogIn);
+
+        preg_match("/.*PHPSESSID=([^;]*);.*/", $resultLogIn, $phpSessidCookie);
+
+        $curlHandleBook = curl_init("http://www.neoness-forme.com/cours-annuler-reservation.php?resa=".strval($save->getcoursId()));
+        curl_setopt($curlHandleBook, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curlHandleBook, CURLOPT_HTTPHEADER, array("Cookie: PHPSESSID=".$phpSessidCookie[1])); // We add PHPSESSID cookie to the request
+        $resultBook = curl_exec($curlHandleBook);
+        curl_close($curlHandleBook);
+
+        $em = $this->getDoctrine()->getManager();
+        $save->setReservation('0');
+        $em->persist($save);
+        $em->flush();
+
+        return $this->render('MaudSportBundle:Save:cancel.html.twig', array('coursid'=>$save->getcoursId(), 'password'=>$password,'result' => $resultBook));
+    }
 
   //Function that books the next session for the favorite course
   public function bookCourseAction($password,$id,$targetClubName,$targetCourseName,$targetDay) {
@@ -139,7 +160,6 @@ class SaveController extends Controller
 
     // Step 2: get target course id from these informations
     // First we get the Club Id based on club Name
-        //$targetClubName = "Saint-Lazare";
 
     // Array filter will filter our clubs array to leave only the club whose name match
     $targetClubs = array_filter(
@@ -153,7 +173,7 @@ class SaveController extends Controller
       }
     );
 
-    $targetClub = array_values($targetClubs)[0]; // Weird syntax: we take the first element of $targetClubs which is our target club
+    $targetClub = array_values($targetClubs)[0];
     $targetClubId = $targetClub["id"];
 
     // Now that we have the Id, we want to find target courses on the right day
@@ -206,7 +226,7 @@ class SaveController extends Controller
     $repository = $this->getDoctrine()->getManager()->getRepository('MaudSportBundle:Save');
     $save = $repository->find($id);
     $save->setReservation('1');
-    $save->setCoursId($targetCourse["id"]);
+    $save->setCoursId(intval($targetCourse["id"]));
     $em->persist($save);
     $em->flush();
 

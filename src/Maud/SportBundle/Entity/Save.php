@@ -53,9 +53,15 @@ class Save
     /**
      * @var int
      *
-     * @ORM\Column(name="coursid", type="integer", options={"default"= 1})
+     * @ORM\Column(name="coursid", type="integer")
      */
-    private $coursId = 1;
+    private $coursId;
+
+    public function __construct()
+    {
+        $this->coursId = 0;
+    }
+
 
     /**
      * Get id
@@ -166,13 +172,13 @@ class Save
     /**
      * Set coursId
      *
-     * @param string $coursId
+     * @param int $coursId
      *
      * @return Save
      */
     public function setCoursId($coursId)
     {
-        $this->club = $coursId;
+        $this->coursId = $coursId;
 
         return $this;
     }
@@ -180,7 +186,7 @@ class Save
     /**
      * Get coursId
      *
-     * @return string
+     * @return int
      */
     public function getCoursId()
     {

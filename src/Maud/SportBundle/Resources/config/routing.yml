@@ -31,7 +31,7 @@ cours_sport_delete:
 cours_sport_cancelBooking:
     path:    /cancel/{id}/{password}
     defaults:
-        _controller: MaudSportBundle:Save:cancelBookingAction
+        _controller: MaudSportBundle:Save:cancelBooking
     requirements:
         id: \d+
         password : .+
